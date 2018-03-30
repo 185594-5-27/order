@@ -1,5 +1,7 @@
 package com.mongodb.sys.entity;
 
+import com.fasterxml.jackson.databind.util.JSONPObject;
+import net.sf.json.JSONObject;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,7 +18,23 @@ import java.util.List;
 */
 public class User implements UserDetails {
 
-    private int id;
+    public static void main(String [] args){
+        User user = new User();
+        List<UserRole> roles = new ArrayList<UserRole>();
+        UserRole userRole = new UserRole();
+        userRole.setId(1);
+        userRole.setName("ROLE_ADMIN");
+        userRole.setRoleName("系统管理员");
+        roles.add(userRole);
+        user.setLogin("hyll");
+        user.setPassword("140b6ce18716153fba3bf98a52722bd5");
+        user.setRoles(roles);
+        user.setId(1l);
+        System.out.println(JSONObject.fromObject(user).toString());
+
+    }
+
+    private Long id;
     private String login;
     private String password;
     private String userName;
@@ -77,11 +95,11 @@ public class User implements UserDetails {
         return true;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

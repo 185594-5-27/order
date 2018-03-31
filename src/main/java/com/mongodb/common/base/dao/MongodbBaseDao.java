@@ -1,5 +1,6 @@
 package com.mongodb.common.base.dao;
 
+import com.mongodb.common.base.entity.Pagination;
 import com.mongodb.common.base.entity.QueryField;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -77,6 +78,28 @@ public abstract class MongodbBaseDao<T>{
     // 通过ID获取记录,并且指定了集合名(表的意思)
     public T get(String id, String collectionName) {
         return mongoTemplate.findById(id, this.getEntityClass(), collectionName);
+    }
+
+    /**
+     * 通过条件查询,查询分页结果
+     */
+    public Pagination<T> findByPage(int currentPage, int pageSize, Query query) {
+        //获取总条数
+        long totalCount = this.mongoTemplate.count(query, this.getEntityClass());
+        //总页数
+        int totalPage = (int) (totalCount/pageSize);
+
+        int skip = (currentPage-1)*pageSize;
+
+        Pagination<T> page = new Pagination(currentPage, totalPage, (int)totalCount);
+        query.skip(skip);// skip相当于从那条记录开始
+        query.limit(pageSize);// 从skip开始,取多少条记录
+
+        List<T> datas = this.find(query);
+
+        page.build(datas);//获取数据
+
+        return page;
     }
 
     // 根据vo构建查询条件Query

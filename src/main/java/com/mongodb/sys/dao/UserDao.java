@@ -9,7 +9,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Component;
 
 /*
-* 类描述：
+* 类描述：实现用户管理的dao
 * @auther linzf
 * @create 2018/3/30 0030 
 */

@@ -4,6 +4,7 @@ import com.mongodb.common.base.dao.MongodbBaseDao;
 import com.mongodb.common.base.entity.Pagination;
 import com.mongodb.common.base.service.MongodbBaseService;
 import com.mongodb.sys.dao.UserDao;
+import com.mongodb.sys.entity.QueryUser;
 import com.mongodb.sys.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.query.Query;
@@ -14,27 +15,25 @@ import org.springframework.stereotype.Service;
  * 功能描述:实现用户管理的service
  */
 @Service
-public class UserService extends MongodbBaseService<User> {
+public class UserService extends MongodbBaseService<User,QueryUser> {
 
     @Autowired
     private UserDao userDao;
 
     @Override
-    protected MongodbBaseDao<User> getDao() {
+    protected MongodbBaseDao<User,QueryUser> getDao() {
         return userDao;
     }
 
 
     /**
      * 功能描述：实现用户的分页逻辑
-     * @param currentPage
-     * @param pageSize
      * @param entity
      * @return
      */
-    public Pagination<User> findByPage(int currentPage, int pageSize,User entity){
+    public Pagination<User> findByPage(QueryUser entity){
         Query query = new Query();
-        return userDao.findByPage(currentPage,pageSize,query);
+        return userDao.findByPage(entity,query);
     }
 
     /**

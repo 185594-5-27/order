@@ -3,6 +3,7 @@ package com.mongodb.sys.controller;
 import com.mongodb.common.base.controller.MongodbBaseController;
 import com.mongodb.common.base.entity.Pagination;
 import com.mongodb.common.base.service.MongodbBaseService;
+import com.mongodb.sys.entity.QueryUser;
 import com.mongodb.sys.entity.User;
 import com.mongodb.sys.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,13 +18,13 @@ import java.util.Map;
 
 @Controller
 @RequestMapping("/user")
-public class UserController extends MongodbBaseController<User> {
+public class UserController extends MongodbBaseController<User,QueryUser> {
 
     @Autowired
     private UserService userService;
 
     @Override
-    protected MongodbBaseService<User> getService() {
+    protected MongodbBaseService<User,QueryUser> getService() {
         return userService;
     }
 
@@ -34,9 +35,9 @@ public class UserController extends MongodbBaseController<User> {
      */
     @RequestMapping(value = "/list",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public Map<String,Object> list(int currentPage, int pageSize,User entity){
+    public Map<String,Object> list(QueryUser entity){
         Map<String,Object> result = new HashMap<String, Object>();
-        Pagination page = userService.findByPage(currentPage,pageSize,entity);
+        Pagination page = userService.findByPage(entity);
         result.put("totalCount",page.getTotalNumber());
         result.put("result",page.getItems());
         return result;

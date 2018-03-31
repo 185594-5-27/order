@@ -1,6 +1,7 @@
 package com.mongodb.sys.dao;
 
 import com.mongodb.common.base.dao.MongodbBaseDao;
+import com.mongodb.sys.entity.QueryUser;
 import com.mongodb.sys.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -14,7 +15,7 @@ import org.springframework.stereotype.Component;
 * @create 2018/3/30 0030 
 */
 @Component
-public class UserDao extends MongodbBaseDao<User> {
+public class UserDao extends MongodbBaseDao<User,QueryUser> {
 
     /**
      * 功能描述：根据账号来获取用户信息

@@ -2,14 +2,15 @@ package com.mongodb.common.base.service;
 
 import com.mongodb.common.base.dao.MongodbBaseDao;
 import com.mongodb.common.base.entity.Pagination;
+import com.mongodb.common.base.entity.QueryBase;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 
 import java.util.List;
 
-public abstract class MongodbBaseService<T> {
+public abstract class MongodbBaseService<T,Q extends QueryBase> {
 
-    protected abstract MongodbBaseDao<T> getDao();
+    protected abstract MongodbBaseDao<T,Q> getDao();
 
     //保存一个对象到mongodb
     public T save(T bean) {

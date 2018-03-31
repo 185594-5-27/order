@@ -1,6 +1,7 @@
 package com.mongodb.common.base.dao;
 
 import com.mongodb.common.base.entity.Pagination;
+import com.mongodb.common.base.entity.QueryBase;
 import com.mongodb.common.base.entity.QueryField;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -18,7 +19,7 @@ import java.util.List;
 * @auther linzf
 * @create 2018/3/30 0030 
 */
-public abstract class MongodbBaseDao<T>{
+public abstract class MongodbBaseDao<T,Q extends QueryBase>{
 
     @Autowired
     @Qualifier("mongoTemplate")
@@ -83,17 +84,17 @@ public abstract class MongodbBaseDao<T>{
     /**
      * 通过条件查询,查询分页结果
      */
-    public Pagination<T> findByPage(int currentPage, int pageSize, Query query) {
+    public Pagination<T> findByPage(Q q, Query query) {
         //获取总条数
         long totalCount = this.mongoTemplate.count(query, this.getEntityClass());
         //总页数
-        int totalPage = (int) (totalCount/pageSize);
+        int totalPage = (int) (totalCount/q.getLimit());
 
-        int skip = (currentPage-1)*pageSize;
+        int skip = (q.getPage()-1)*q.getLimit();
 
-        Pagination<T> page = new Pagination(currentPage, totalPage, (int)totalCount);
+        Pagination<T> page = new Pagination(q.getPage(), totalPage, (int)totalCount);
         query.skip(skip);// skip相当于从那条记录开始
-        query.limit(pageSize);// 从skip开始,取多少条记录
+        query.limit(q.getLimit());// 从skip开始,取多少条记录
 
         List<T> datas = this.find(query);
 

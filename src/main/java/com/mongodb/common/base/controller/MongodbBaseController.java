@@ -1,6 +1,7 @@
 package com.mongodb.common.base.controller;
 
 import com.mongodb.common.base.constant.SystemStaticConst;
+import com.mongodb.common.base.entity.QueryBase;
 import com.mongodb.common.base.service.MongodbBaseService;
 import org.springframework.http.MediaType;
 import org.springframework.ui.Model;
@@ -13,9 +14,9 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public abstract class MongodbBaseController<T> {
+public abstract class MongodbBaseController<T,Q extends QueryBase> {
 
-    protected abstract MongodbBaseService<T> getService();
+    protected abstract MongodbBaseService<T,Q> getService();
 
     /**添加页面路径*/
     public final static String ADDPAGE = "/add";

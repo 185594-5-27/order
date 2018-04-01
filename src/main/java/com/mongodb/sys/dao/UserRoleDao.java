@@ -19,7 +19,7 @@ public class UserRoleDao extends MongodbBaseDao<UserRole,QueryUserRole> {
      */
     public List<UserRole> getUserRoleByRoleId(List<UserRole> roles){
         Query query = new Query();
-        long [] ids = new long[roles.size()];
+        String [] ids = new String[roles.size()];
         for(int i=0;i<roles.size();i++){
             ids[i] = roles.get(i).getId();
         }

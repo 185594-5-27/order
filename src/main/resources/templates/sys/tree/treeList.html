@@ -41,7 +41,7 @@
                 window.Ewin.confirm({title: '提示', message: '是否要删除您当前选中的菜单节点？', width: 500}).on(function (e) {
                     if (e) {
                         $.post("tree/remove",{id:treeNode.id},function(e){
-                            if(e.result){
+                            if(e.success){
                                 zTree.removeNode(treeNode);
                                 window.Ewin.alert({message:e.msg});
                             }else{
@@ -64,7 +64,7 @@
         if (add_parent_btn) add_parent_btn.bind("click", function(){
             zTree = $.fn.zTree.getZTreeObj("menu_tree");
             selectNode = null;
-            window.Ewin.dialog({title:"添加",url:"tree/addTreePage",width:winWidth<=415?winWidth-20:400,height:650})
+            window.Ewin.dialog({title:"添加",url:"tree/addTreePage?id=5ac0c4a0c053f417ac310e3f",width:winWidth<=415?winWidth-20:400,height:650})
             return false;
         })
     };
@@ -91,8 +91,8 @@
             simpleData: {
                 enable:true,
                 idKey: "id",
-                pIdKey: "pId",
-                rootPId: "0"
+                pIdKey: "parentId",
+                rootPId: "5ac0c4a0c053f417ac310e3f"
             }
         },
         callback: {

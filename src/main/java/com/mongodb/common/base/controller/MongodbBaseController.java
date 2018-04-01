@@ -3,13 +3,16 @@ package com.mongodb.common.base.controller;
 import com.mongodb.common.base.constant.SystemStaticConst;
 import com.mongodb.common.base.entity.QueryBase;
 import com.mongodb.common.base.service.MongodbBaseService;
+import com.mongodb.common.util.json.JsonHelper;
 import org.springframework.http.MediaType;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.lang.reflect.ParameterizedType;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -122,6 +125,21 @@ public abstract class MongodbBaseController<T,Q extends QueryBase> {
     public Map<String,Object> remove(T entity) throws Exception{
         Map<String,Object> result = new HashMap<String, Object>();
         getService().deleteById(entity);
+        result.put(SystemStaticConst.RESULT,SystemStaticConst.SUCCESS);
+        result.put(SystemStaticConst.MSG,"删除数据成功！");
+        return result;
+    }
+
+    /**
+     * 功能描述：实现批量删除数据字典的记录
+     * @param json
+     * @return
+     */
+    @RequestMapping(value = "/removeBath",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public Map<String,Object> removeBath(String json) throws Exception{
+        Map<String,Object> result = new HashMap<String, Object>();
+        getService().removeBath((List<T>) JsonHelper.toList(json,(Class <T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0]));
         result.put(SystemStaticConst.RESULT,SystemStaticConst.SUCCESS);
         result.put(SystemStaticConst.MSG,"删除数据成功！");
         return result;

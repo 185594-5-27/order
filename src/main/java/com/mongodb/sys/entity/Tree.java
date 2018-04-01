@@ -1,6 +1,7 @@
 package com.mongodb.sys.entity;
 
 import net.sf.json.JSONObject;
+import org.bson.types.ObjectId;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,49 +13,78 @@ public class Tree implements Comparable<Tree> {
 
 
 	public static void main(String [] args){
+		ObjectId parentId = ObjectId.get();
 		Tree tree = new Tree();
-		tree.setId(1l);
+		tree.setId(ObjectId.get().toString().toString());
 		tree.setName("系统管理");
-		tree.setParentId(0);
+		tree.setParentId(parentId.toString());
 		tree.setCode("system");
 		tree.setState("1");
 		tree.setTreeOrder(1);
 		System.out.println(JSONObject.fromObject(tree).toString());
-		tree = new Tree();
-		tree.setId(2l);
-		tree.setName("用户管理");
-		tree.setParentId(1l);
-		tree.setCode("user_manager");
-		tree.setState("1");
-		tree.setTreeOrder(1);
-		tree.setUrl("/userList");
-		System.out.println(JSONObject.fromObject(tree).toString());
+
 	}
 
 	public Tree(){
 		super();
 	}
 
-	public Tree(Long id){
-		this.id = id;
+	public Tree(String id){
+		this.id = new ObjectId(id);
 	}
 
-	private long id;
+
+
+	private ObjectId id;
 	private String code;
 	private String icon;
 	private String name;
-	private long parentId;
+	private ObjectId parentId;
 	private long treeOrder;
 	private String url;
 	private String state;
+	private boolean checked;
 	private List<Tree> child;
+	private Tree tree;
 
-	public long getParentId() {
-		return parentId;
+	public Tree getTree() {
+		return tree;
 	}
 
-	public void setParentId(long parentId) {
-		this.parentId = parentId;
+	public void setTree(Tree tree) {
+		this.tree = tree;
+	}
+
+	public String getId() {
+		if(id!=null){
+			return id.toString();
+		}else{
+			return "";
+		}
+	}
+
+	public void setId(String id) {
+		this.id = new ObjectId(id);;
+	}
+
+	public String getParentId() {
+		if(parentId!=null){
+			return parentId.toString();
+		}else{
+			return "";
+		}
+	}
+
+	public void setParentId(String parentId) {
+		this.parentId = new ObjectId(parentId);;
+	}
+
+	public boolean isChecked() {
+		return checked;
+	}
+
+	public void setChecked(boolean checked) {
+		this.checked = checked;
 	}
 
 	public List<Tree> getChild() {
@@ -65,13 +95,7 @@ public class Tree implements Comparable<Tree> {
 		this.child = child;
 	}
 
-	public long getId() {
-		return id;
-	}
 
-	public void setId(long id) {
-		this.id = id;
-	}
 
 	public String getCode() {
 		return code;

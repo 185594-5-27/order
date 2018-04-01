@@ -92,7 +92,7 @@
             bootstrapValidator.validate();
             if(bootstrapValidator.isValid()){
                 $.post($("#dictForm",window.top.document).attr('action'),$("#dictForm",window.top.document).serialize(),function(e){
-                    if(e.result){
+                    if(e.success){
                         $('.modal-dialog', window.top.document).parent('div').remove()
                         $('body', window.top.document).find('.modal-backdrop').remove();
                         // jquery 调用刷新当前操作的table页面的refresh方法

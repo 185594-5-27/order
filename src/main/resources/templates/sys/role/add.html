@@ -89,7 +89,7 @@
             bootstrapValidator.validate();
             if(bootstrapValidator.isValid()){
                 $.post($("#roleForm",window.top.document).attr('action'),$("#roleForm",window.top.document).serialize(),function(e){
-                    if(e.result){
+                    if(e.success){
                         $('.modal-dialog', window.top.document).parent('div').remove()
                         $('body', window.top.document).find('.modal-backdrop').remove();
                         // jquery 调用刷新当前操作的table页面的refresh方法
@@ -116,8 +116,8 @@
                 simpleData: {
                     enable:true,
                     idKey: "id",
-                    pIdKey: "pId",
-                    rootPId: "0"
+                    pIdKey: "parentId",
+                    rootPId: "5ac0c4a0c053f417ac310e3f"
                 }
             },
             callback: {

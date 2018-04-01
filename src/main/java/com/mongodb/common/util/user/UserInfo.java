@@ -28,7 +28,7 @@ public class UserInfo {
      * @return
      */
     public static List<Tree> loadUserTree(UserRoleService userRoleService){
-        Map<Long,Tree> treeMap = new HashMap<Long,Tree>();
+        Map<String,Tree> treeMap = new HashMap<String,Tree>();
         User user = getUser();
         List<UserRole> userRoleList = userRoleService.getUserRoleByRoleId(user);
         for(UserRole userRole:userRoleList){
@@ -36,7 +36,7 @@ public class UserInfo {
                 treeMap.put(tree.getId(),tree);
             }
         }
-        List<Tree> treeList = NodeUtil.getChildNodes(new ArrayList<Tree>(treeMap.values()),0l);
+        List<Tree> treeList = NodeUtil.getChildNodes(new ArrayList<Tree>(treeMap.values()),"5ac0e051c053f4297804f42d");
         return treeList;
     }
 

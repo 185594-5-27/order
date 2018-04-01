@@ -51,7 +51,7 @@ public class UserController extends MongodbBaseController<User,QueryUser> {
 
 
     /**
-     * 功能描述：获取数据字典的分页的数据
+     * 功能描述：获取用户的分页的数据
      * @param entity
      * @return
      */

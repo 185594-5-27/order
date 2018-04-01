@@ -26,17 +26,17 @@ public class NodeUtil {
      * @param typeId 传入的父节点ID
      * @return String
      */
-    public static List<Tree> getChildNodes(List<Tree> list, Long typeId) {
+    public static List<Tree> getChildNodes(List<Tree> list, String typeId) {
         returnList = new ArrayList<Tree>();
         if(list == null && typeId == null) return new ArrayList<Tree>();
         for (Iterator<Tree> iterator = list.iterator(); iterator.hasNext();) {
             Tree node = (Tree) iterator.next();
             // 一、根据传入的某个父节点ID,遍历该父节点的所有子节点
-            if (node.getParentId()==0 && typeId==node.getId()) {
+            if (node.getParentId().equals("5ac0e051c053f4297804f42d") && typeId.equals(node.getId())) {
                 recursionFn(list, node);
             }
             // 二、遍历所有的父节点下的所有子节点
-            if (node.getParentId()==0) {
+            if (node.getParentId().equals("5ac0e051c053f4297804f42d")) {
                 recursionFn(list, node);
             }
         }
@@ -66,7 +66,7 @@ public class NodeUtil {
         Iterator<Tree> it = list.iterator();
         while (it.hasNext()) {
             Tree n = (Tree) it.next();
-            if (n.getParentId() == node.getId()) {
+            if (n.getParentId().equals(node.getId())) {
                 nodeList.add(n);
             }
         }

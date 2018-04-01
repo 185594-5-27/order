@@ -23,6 +23,18 @@ public abstract class MongodbBaseService<T,Q extends QueryBase> {
         getDao().deleteById(t);
     }
 
+    /**
+     * 功能描述：批量删除数据
+     * @param entityList
+     * @return
+     */
+    public boolean removeBath(List<T> entityList) throws Exception{
+        for(T t:entityList){
+            deleteById(t);
+        }
+        return true;
+    }
+
     // 根据对象的属性删除
     public void deleteByCondition(T t) {
         getDao().deleteByCondition(t);
@@ -61,5 +73,12 @@ public abstract class MongodbBaseService<T,Q extends QueryBase> {
         return getDao().get(id,collectionName);
     }
 
+
+    /**
+     * 通过条件查询,查询分页结果
+     */
+    public Pagination<T> findByPage(Q q, Query query){
+        return getDao().findByPage(q,query);
+    }
 
 }

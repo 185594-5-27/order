@@ -2,7 +2,7 @@
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <body>
 <form id="treeForm"  role="form" method="post" action="tree/save">
-    <input type="hidden" name="pId" th:value="${entity.id}" />
+    <input type="hidden" name="parentId" th:value="${entity.id}" />
     <div class="form-group" >
         <label >父菜单名称:</label>
         <input type="text" class="form-control" th:value="${entity.name}" readonly="readonly"  />
@@ -97,7 +97,7 @@
                 var zTree = $(window.parent.document).contents().find(".tab-pane.fade.active.in iframe")[0].contentWindow.zTree;
                 var selectNode = $(window.parent.document).contents().find(".tab-pane.fade.active.in iframe")[0].contentWindow.selectNode;
                 $.post($("#treeForm",window.top.document).attr('action'),$("#treeForm",window.top.document).serialize(),function(e){
-                    if(e.result){
+                    if(e.success){
                         $('.modal-dialog', window.top.document).parent('div').remove()
                         $('body', window.top.document).find('.modal-backdrop').remove();
                         var entity = e.entity;

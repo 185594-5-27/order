@@ -1,12 +1,15 @@
 package com.mongodb.sys.service;
 
 import com.mongodb.common.base.dao.MongodbBaseDao;
+import com.mongodb.common.base.entity.Pagination;
 import com.mongodb.common.base.service.MongodbBaseService;
 import com.mongodb.sys.dao.UserRoleDao;
 import com.mongodb.sys.entity.QueryUserRole;
 import com.mongodb.sys.entity.User;
 import com.mongodb.sys.entity.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,6 +24,35 @@ public class UserRoleService extends MongodbBaseService<UserRole,QueryUserRole> 
     protected MongodbBaseDao<UserRole, QueryUserRole> getDao() {
         return userRoleDao;
     }
+
+    @Override
+    public UserRole save(UserRole entity) {
+        entity.packagingTrees(entity.getTreeArray());
+        return super.save(entity);
+    }
+
+    @Override
+    public void updateById(String id, UserRole entity) {
+        entity.packagingTrees(entity.getTreeArray());
+        super.updateById(id, entity);
+    }
+
+    /**
+     * 功能描述：实现用户角色的分页逻辑
+     * @param entity
+     * @return
+     */
+    public Pagination<UserRole> findByPage(QueryUserRole entity){
+        Query query = new Query();
+        if(entity.getName()!=null&&!entity.getName().equals("")){
+            query.addCriteria(Criteria.where("name").regex(".*?"+entity.getName()+".*"));
+        }
+        if(entity.getRoleName()!=null&&!entity.getRoleName().equals("")){
+            query.addCriteria(Criteria.where("roleName").regex(".*?"+entity.getRoleName()+".*"));
+        }
+        return userRoleDao.findByPage(entity,query);
+    }
+
 
     /**
      * 功能描述：根据用户来获取用户相应的角色以及他的菜单数据

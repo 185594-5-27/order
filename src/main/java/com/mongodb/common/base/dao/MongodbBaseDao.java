@@ -89,16 +89,12 @@ public abstract class MongodbBaseDao<T,Q extends QueryBase>{
         long totalCount = this.mongoTemplate.count(query, this.getEntityClass());
         //总页数
         int totalPage = (int) (totalCount/q.getLimit());
-
         int skip = (q.getPage()-1)*q.getLimit();
-
         Pagination<T> page = new Pagination(q.getPage(), totalPage, (int)totalCount);
         query.skip(skip);// skip相当于从那条记录开始
         query.limit(q.getLimit());// 从skip开始,取多少条记录
-
-        List<T> datas = this.find(query);
-
-        page.build(datas);//获取数据
+        List<T> data = this.find(query);
+        page.build(data);//获取数据
 
         return page;
     }

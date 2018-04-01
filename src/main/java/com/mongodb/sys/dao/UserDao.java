@@ -17,6 +17,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class UserDao extends MongodbBaseDao<User,QueryUser> {
 
+
+
     /**
      * 功能描述：根据账号来获取用户信息
      * @param login

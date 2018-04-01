@@ -7,6 +7,7 @@ import com.mongodb.sys.dao.UserDao;
 import com.mongodb.sys.entity.QueryUser;
 import com.mongodb.sys.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
@@ -33,6 +34,15 @@ public class UserService extends MongodbBaseService<User,QueryUser> {
      */
     public Pagination<User> findByPage(QueryUser entity){
         Query query = new Query();
+        if(entity.getUserName()!=null&&!entity.getUserName().equals("")){
+            query.addCriteria(Criteria.where("userName").regex(".*?"+entity.getUserName()+".*"));
+        }
+        if(entity.getLogin()!=null&&!entity.getLogin().equals("")){
+            query.addCriteria(Criteria.where("login").regex(".*?"+entity.getLogin()+".*"));
+        }
+        if(entity.getJob()!=null&&!entity.getJob().equals("")){
+            query.addCriteria(Criteria.where("job").regex(".*?"+entity.getJob()+".*"));
+        }
         return userDao.findByPage(entity,query);
     }
 

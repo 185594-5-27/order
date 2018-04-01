@@ -34,7 +34,7 @@ public class CustomUserService implements UserDetailsService {
         Update update= new Update().set("lastLoginDate", new Date());
         userDao.update(query,update);
         // 自定义错误的文章说明的地址：http://blog.csdn.net/z69183787/article/details/21190639?locationNum=1&fps=1
-        if(user.getState().equalsIgnoreCase("0")){
+        if(user.getState()==null||user.getState().equalsIgnoreCase("0")){
             throw new LockedException("用户账号被冻结，无法登陆请联系管理员！");
         }
         return user;

@@ -4,7 +4,7 @@ $(function () {
         var opts = $.extend({}, $.fn.dictUtil.defaults, options);
         if(dictValueMap.size()==0){
             $.post(opts.url,function(r){
-                if(r.result){
+                if(r.success){
                     $.each(r.data,function(index,info){
                         dictValueMap.put(info.type+"_"+info.code,info.value+"|"+info.text);
                         dictCodeMap.put(info.type+"_"+info.value,info.code+"|"+info.text)

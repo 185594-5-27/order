@@ -32,11 +32,11 @@ public class NodeUtil {
         for (Iterator<Tree> iterator = list.iterator(); iterator.hasNext();) {
             Tree node = (Tree) iterator.next();
             // 一、根据传入的某个父节点ID,遍历该父节点的所有子节点
-            if (node.getParentId().equals("5ac0e051c053f4297804f42d") && typeId.equals(node.getId())) {
+            if (node.getParentId().equals("5ac0c4a0c053f417ac310e3f") && typeId.equals(node.getId())) {
                 recursionFn(list, node);
             }
             // 二、遍历所有的父节点下的所有子节点
-            if (node.getParentId().equals("5ac0e051c053f4297804f42d")) {
+            if (node.getParentId().equals("5ac0c4a0c053f417ac310e3f")) {
                 recursionFn(list, node);
             }
         }

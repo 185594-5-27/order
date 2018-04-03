@@ -55,7 +55,7 @@
         window.Ewin.confirm({title: '提示', message: confirmTitle, width: 500}).on(function (e) {
             if (e) {
                 $.post("/user/userControl",{state:state,id:id},function(data){
-                    if(data.result){
+                    if(data.success){
                         window.Ewin.alert({message:'操作成功!'});
                         doQuery();
                     }else{
@@ -111,7 +111,7 @@
                         window.Ewin.confirm({title:'提示',message:'是否要删除您当前所勾选的用户？',width:500}).on(function (e) {
                             if (e) {
                                 $.post("user/removeBath",{json:JSON.stringify(rows)},function(e){
-                                    if(e.result){
+                                    if(e.success){
                                         window.Ewin.alert({message:e.msg});
                                         doQuery();
                                     }
@@ -191,9 +191,9 @@
                     valign : 'middle',
                     formatter: function (value, row, index) {
                         if(row.state=='1'){
-                            return '<a href="#" onclick="userControl(0,'+row.id+')" >禁用</a>';
+                            return '<a href="#" onclick="userControl(0,\''+row.id+'\')" >禁用</a>';
                         }else{
-                            return '<a href="#" onclick="userControl(1,'+row.id+')" >启用</a>';
+                            return '<a href="#" onclick="userControl(1,\''+row.id+'\')" >启用</a>';
                         }
 
                     }

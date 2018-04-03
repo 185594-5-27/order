@@ -11,7 +11,7 @@
             <div class="panel-heading" id="groupQueryTitle">查询条件</div>
             <div class="panel-body">
                 <form class="form-inline" role="form" style="float: left; width: 100%;" method="post" id="queryGroupUser">
-                    <input type="hidden" id="groupNode" name="orgGroup.node" value="" />
+                    <input type="hidden" id="groupNode" name="groupId" value="" />
                     <input type="hidden" id="groupParentNode" name="orgGroup.parentNode" value="" />
                     <div class="form-group">
                         <label for="userName">名字:</label>
@@ -46,7 +46,7 @@
         if (btn) btn.bind("click", function(){
             zTree = $.fn.zTree.getZTreeObj("tree");
             selectNode = treeNode;
-            window.Ewin.dialog({title:"添加",url:"group/addGroupPage?groupId="+treeNode.groupId,gridId:"gridId",width:400,height:460})
+            window.Ewin.dialog({title:"添加",url:"group/addGroupPage?id="+treeNode.id,gridId:"gridId",width:400,height:460})
             return false;
         });
         var remove_btn = $("#removeBtn_"+treeNode.tId);
@@ -57,8 +57,8 @@
             }else{
                 window.Ewin.confirm({title: '提示', message: '是否要删除您当前选中的组织机构？', width: 500}).on(function (e) {
                     if (e) {
-                        $.post("group/remove",{groupId:treeNode.groupId},function(e){
-                            if(e.result){
+                        $.post("group/remove",{id:treeNode.id},function(e){
+                            if(e.success){
                                 zTree.removeNode(treeNode);
                                 window.Ewin.alert({message:e.msg});
                             }else{
@@ -74,7 +74,7 @@
         if (edit_btn) edit_btn.bind("click", function(){
             zTree = $.fn.zTree.getZTreeObj("tree");
             selectNode = treeNode;
-            window.Ewin.dialog({title:"修改",url:"group/updateGroupPage?groupId="+treeNode.groupId,gridId:"gridId",width:400,height:460})
+            window.Ewin.dialog({title:"修改",url:"group/updateGroupPage?id="+treeNode.id,gridId:"gridId",width:400,height:460})
             return false;
         });
     };
@@ -87,28 +87,28 @@
 
     var setting = {
         check: {
-            enable: true
+            enable: false
         },
         view: {
             addHoverDom: addHoverDom,
             removeHoverDom: removeHoverDom,
             dblClickExpand: true,
             showLine: true,
-            selectedMulti: false
+            selectedMulti: true
         },
         data: {
             simpleData: {
                 enable:true,
-                idKey: "node",
-                pIdKey: "parentNode",
+                idKey: "id",
+                pIdKey: "parentId",
                 rootPId: "0"
             }
         },
         callback: {
             beforeClick: function(treeId, treeNode) {
                 var zTree = $.fn.zTree.getZTreeObj('tree');
-                $("#groupParentNode").attr("value",treeNode.parentNode);
-                $("#groupNode").attr("value",treeNode.node);
+                $("#groupParentNode").attr("value",treeNode.parentId);
+                $("#groupNode").attr("value",treeNode.id);
                 $("#groupQueryTitle").html("查询条件（"+treeNode.name+"）")
                 doQuery();
                 if (treeNode.isParent) {
@@ -137,8 +137,8 @@
         $.post("/group/loadGroupTree",function(info){
             var t = $("#tree");
             t = $.fn.zTree.init(t, setting,info.data);
-            $("#groupParentNode").attr("value",$.fn.zTree.getZTreeObj('tree').getNodes()[0].parentNode);
-            $("#groupNode").attr("value",$.fn.zTree.getZTreeObj('tree').getNodes()[0].node);
+           // $("#groupParentNode").attr("value",$.fn.zTree.getZTreeObj('tree').getNodes()[0].parentId);
+          //  $("#groupNode").attr("value",$.fn.zTree.getZTreeObj('tree').getNodes()[0].id);
             $("#groupQueryTitle").html("查询条件（"+$.fn.zTree.getZTreeObj('tree').getNodes()[0].name+"）")
             initTable();
             $('#group-user-table').bootstrapTable('hideColumn', 'id');

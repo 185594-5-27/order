@@ -3,9 +3,13 @@ package com.mongodb.sys.service;
 import com.mongodb.common.base.dao.MongodbBaseDao;
 import com.mongodb.common.base.entity.Pagination;
 import com.mongodb.common.base.service.MongodbBaseService;
+import com.mongodb.common.util.user.UserInfo;
 import com.mongodb.sys.dao.UserDao;
+import com.mongodb.sys.dao.UserRoleDao;
 import com.mongodb.sys.entity.QueryUser;
 import com.mongodb.sys.entity.User;
+import com.mongodb.sys.entity.UserRole;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -21,11 +25,38 @@ public class UserService extends MongodbBaseService<User,QueryUser> {
     @Autowired
     private UserDao userDao;
 
+    @Autowired
+    private UserRoleDao userRoleDao;
+
     @Override
     protected MongodbBaseDao<User,QueryUser> getDao() {
         return userDao;
     }
 
+    /**
+     * 功能描述：更新用户状态为可用或者不可用
+     * @param user
+     * @return
+     */
+    public void userControl(User user){
+        userDao.userControl(user);
+    }
+
+
+    @Override
+    public void updateById(String id, User user) {
+        user.packagingRoles(user.getRoleArray(),userRoleDao);
+        super.updateById(id, user);
+    }
+
+    @Override
+    public User save(User entity) {
+        entity.setAddress(entity.getProvince()+entity.getCity()+entity.getDistrict()+entity.getStreetAddress());
+        entity.setPassword(UserInfo.encode(entity.getPassword()));
+        entity.setState("1");
+        entity.packagingRoles(entity.getRoleArray(),userRoleDao);
+        return super.save(entity);
+    }
 
     /**
      * 功能描述：实现用户的分页逻辑
@@ -42,6 +73,9 @@ public class UserService extends MongodbBaseService<User,QueryUser> {
         }
         if(entity.getJob()!=null&&!entity.getJob().equals("")){
             query.addCriteria(Criteria.where("job").regex(".*?"+entity.getJob()+".*"));
+        }
+        if(entity.getGroupId()!=null&&!entity.getGroupId().equals("")){
+            query.addCriteria(Criteria.where("orgGroup.id").is(new ObjectId(entity.getGroupId())));
         }
         return userDao.findByPage(entity,query);
     }

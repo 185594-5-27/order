@@ -38,7 +38,7 @@
             </div>
             <div class="form-inline">
                 <label for="groupName">所属部门:</label>
-                <input type="hidden" name="orgGroup.groupId" id="groupId" />
+                <input type="hidden" name="orgGroup.id" id="groupId" />
                 <input type="text" class="form-control" name="groupName" id="groupName"  readonly="readonly"  placeholder="请选择所属部门" />
                 <div class="col-md-3" style="margin-top: 10px;">
                     <ul id="groupZtree" class="ztree" style="width:200px; overflow:auto;"></ul>
@@ -224,7 +224,7 @@
             bootstrapValidator.validate();
             if(bootstrapValidator.isValid()){
                 $.post($("#userForm",window.top.document).attr('action'),$("#userForm",window.top.document).serialize(),function(e){
-                    if(e.result){
+                    if(e.success){
                         $('.modal-dialog', window.top.document).parent('div').remove()
                         $('body', window.top.document).find('.modal-backdrop').remove();
                         // jquery 调用刷新当前操作的table页面的refresh方法

@@ -1,6 +1,7 @@
 package com.mongodb.sys.entity;
 
 import com.fasterxml.jackson.databind.util.JSONPObject;
+import com.mongodb.sys.dao.UserRoleDao;
 import net.sf.json.JSONObject;
 import org.bson.types.ObjectId;
 import org.springframework.security.core.GrantedAuthority;
@@ -42,7 +43,6 @@ public class User implements UserDetails {
     private String userName;
     private String address;
     private String job;
-    private long groupId;
     private Date birthDate;
     private String city;
     private String district;
@@ -53,6 +53,26 @@ public class User implements UserDetails {
     private Date lastLoginDate;
     // 用户角色信息
     private List<UserRole> roles;
+    // 角色信息集合
+    private String roleArray;
+    // 组织架构数据集合
+    private OrgGroup orgGroup;
+
+    public OrgGroup getOrgGroup() {
+        return orgGroup;
+    }
+
+    public void setOrgGroup(OrgGroup orgGroup) {
+        this.orgGroup = orgGroup;
+    }
+
+    public String getRoleArray() {
+        return roleArray;
+    }
+
+    public void setRoleArray(String roleArray) {
+        this.roleArray = roleArray;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -141,14 +161,6 @@ public class User implements UserDetails {
         this.job = job;
     }
 
-    public long getGroupId() {
-        return groupId;
-    }
-
-    public void setGroupId(long groupId) {
-        this.groupId = groupId;
-    }
-
     public Date getBirthDate() {
         return birthDate;
     }
@@ -219,5 +231,24 @@ public class User implements UserDetails {
 
     public void setRoles(List<UserRole> roles) {
         this.roles = roles;
+    }
+
+    /**
+     * 功能描述：组装角色数据集合
+     * @param roleArray
+     * @param userRoleDao
+     */
+    public void packagingRoles(String roleArray,UserRoleDao userRoleDao){
+        List<UserRole> roles = new ArrayList<UserRole>();
+        if(roleArray!=null){
+            UserRole userRole = null;
+            for(String roleId:roleArray.split(",")){
+                if(!roleId.isEmpty()){
+                    userRole = new UserRole();
+                    roles.add(userRoleDao.get(roleId));
+                }
+            }
+        }
+        this.setRoles(roles);
     }
 }

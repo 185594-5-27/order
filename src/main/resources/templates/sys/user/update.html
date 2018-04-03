@@ -31,9 +31,9 @@
             <div class="form-inline">
                 <label for="groupName">所属部门:</label>
                 <input type="hidden" name="id"  th:value="${entity.id}" />
-                <input type="hidden" name="orgGroup.groupId" id="groupId" th:value="${entity.orgGroup.groupId}" />
-                <input type="text" class="form-control" name="groupName" id="groupName"  readonly="readonly"  th:value="${entity.orgGroup.name}"  placeholder="请选择所属部门" />
-                <div class="col-md-3" style="margin-top: 10px;">
+                <input type="hidden" name="orgGroup.id" id="groupId" th:value="${entity.orgGroup.id}" />
+                <input type="text" class="form-control" name="orgGroup.name" id="groupName"  readonly="readonly"  th:value="${entity.orgGroup.name}"  placeholder="请选择所属部门" />
+                <div class="col-md-12" style="margin-top: 10px;">
                     <ul id="groupZtree" class="ztree" style="width:200px; overflow:auto;"></ul>
                 </div>
             </div>
@@ -167,7 +167,7 @@
             bootstrapValidator.validate();
             if(bootstrapValidator.isValid()){
                 $.post($("#userForm",window.top.document).attr('action'),$("#userForm",window.top.document).serialize(),function(e){
-                    if(e.result){
+                    if(e.success){
                         $('.modal-dialog', window.top.document).parent('div').remove()
                         $('body', window.top.document).find('.modal-backdrop').remove();
                         // jquery 调用刷新当前操作的table页面的refresh方法
@@ -209,8 +209,8 @@
             data: {
                 simpleData: {
                     enable:true,
-                    idKey: "node",
-                    pIdKey: "parentNode",
+                    idKey: "id",
+                    pIdKey: "parentId",
                     rootPId: "0"
                 }
             },

@@ -8,9 +8,12 @@ import com.mongodb.common.util.user.UserInfo;
 import com.mongodb.sys.entity.QueryUser;
 import com.mongodb.sys.entity.Tree;
 import com.mongodb.sys.entity.User;
+import com.mongodb.sys.entity.UserRole;
+import com.mongodb.sys.service.TreeService;
 import com.mongodb.sys.service.UserRoleService;
 import com.mongodb.sys.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,10 +32,43 @@ public class UserController extends MongodbBaseController<User,QueryUser> {
     private UserService userService;
     @Autowired
     private UserRoleService userRoleService;
+    @Autowired
+    private TreeService treeService;
 
     @Override
     protected MongodbBaseService<User,QueryUser> getService() {
         return userService;
+    }
+
+
+    /**
+     * 功能描述：更新用户状态为禁用/启用
+     * @param entity
+     * @return
+     */
+    @RequestMapping(value="/userControl")
+    @ResponseBody
+    public Map<String,Object> userControl(User entity) throws Exception{
+        Map<String,Object> result = new HashMap<String, Object>();
+        userService.userControl(entity);
+        result.put(SystemStaticConst.RESULT,SystemStaticConst.SUCCESS);
+        result.put(SystemStaticConst.MSG,"更新用户状态成功！");
+        result.put("entity",entity);
+        return result;
+    }
+
+    /**
+     * 功能描述：加载所有的权限数据
+     * @return
+     */
+    @RequestMapping(value = "/loadRoles",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public Map<String,Object> loadRoles(){
+        Map<String,Object> result = new HashMap<String, Object>();
+        List<UserRole> userRoleList = userRoleService.find(new Query());
+        result.put(SystemStaticConst.RESULT,SystemStaticConst.SUCCESS);
+        result.put("list",userRoleList);
+        return result;
     }
 
     /**
@@ -43,7 +79,7 @@ public class UserController extends MongodbBaseController<User,QueryUser> {
     @ResponseBody
     public Map<String,Object> mainTree(){
         Map<String,Object> result = new HashMap<String, Object>();
-        List<Tree> trees = UserInfo.loadUserTree(userRoleService);
+        List<Tree> trees = UserInfo.loadUserTree(userRoleService,treeService);
         result.put("data",trees);
         result.put(SystemStaticConst.RESULT, SystemStaticConst.SUCCESS);
         return result;

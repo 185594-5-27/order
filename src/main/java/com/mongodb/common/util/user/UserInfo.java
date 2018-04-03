@@ -6,6 +6,7 @@ import com.mongodb.common.util.node.NodeUtil;
 import com.mongodb.sys.entity.Tree;
 import com.mongodb.sys.entity.User;
 import com.mongodb.sys.entity.UserRole;
+import com.mongodb.sys.service.TreeService;
 import com.mongodb.sys.service.UserRoleService;
 import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.security.core.GrantedAuthority;
@@ -27,16 +28,16 @@ public class UserInfo {
      * 功能描述：加载菜单节点的数据
      * @return
      */
-    public static List<Tree> loadUserTree(UserRoleService userRoleService){
+    public static List<Tree> loadUserTree(UserRoleService userRoleService,TreeService treeService){
         Map<String,Tree> treeMap = new HashMap<String,Tree>();
         User user = getUser();
         List<UserRole> userRoleList = userRoleService.getUserRoleByRoleId(user);
         for(UserRole userRole:userRoleList){
             for(Tree tree:userRole.getTreeList()){
-                treeMap.put(tree.getId(),tree);
+                treeMap.put(tree.getId(),treeService.get(tree.getId()));
             }
         }
-        List<Tree> treeList = NodeUtil.getChildNodes(new ArrayList<Tree>(treeMap.values()),"5ac0e051c053f4297804f42d");
+        List<Tree> treeList = NodeUtil.getChildNodes(new ArrayList<Tree>(treeMap.values()),"5ac0c4a0c053f417ac310e3f");
         return treeList;
     }
 

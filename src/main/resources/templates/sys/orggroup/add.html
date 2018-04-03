@@ -2,7 +2,7 @@
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <body>
 <form id="groupForm"  role="form" method="post" action="group/save">
-    <input type="hidden" name="orgGroup.node" th:value="${entity.node}" />
+    <input type="hidden" name="parentId" th:value="${entity.id}" />
     <div class="form-group" >
         <label >父部门名称:</label>
         <input type="text" class="form-control" th:value="${entity.name}" readonly="readonly"  />
@@ -47,7 +47,7 @@
                         }
                     }
                 },
-                value: {
+                num: {
                     message: '部门编制验证失败',
                     validators: {
                         notEmpty: {
@@ -77,11 +77,11 @@
                 var zTree = $(window.parent.document).contents().find(".tab-pane.fade.active.in iframe")[0].contentWindow.zTree;
                 var selectNode = $(window.parent.document).contents().find(".tab-pane.fade.active.in iframe")[0].contentWindow.selectNode;
                 $.post($("#groupForm",window.top.document).attr('action'),$("#groupForm",window.top.document).serialize(),function(e){
-                    if(e.result){
+                    if(e.success){
                         $('.modal-dialog', window.top.document).parent('div').remove()
                         $('body', window.top.document).find('.modal-backdrop').remove();
                         var entity = e.entity;
-                        zTree.addNodes(selectNode, {node:entity.node, parentNode:entity.parentNode, name:entity.name,groupId:entity.groupId,groupCode:entity.groupCode });
+                        zTree.addNodes(selectNode, {node:entity.id, parentNode:entity.parentId, name:entity.name,id:entity.id,groupCode:entity.groupCode });
                         window.Ewin.alert({message:'增加数据成功!'});
                     }else{
                         window.Ewin.alert({message:'增加数据失败!'});

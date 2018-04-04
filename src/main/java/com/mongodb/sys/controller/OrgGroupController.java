@@ -7,6 +7,7 @@ import com.mongodb.common.base.service.MongodbBaseService;
 import com.mongodb.sys.entity.OrgGroup;
 import com.mongodb.sys.entity.QueryOrgGroup;
 import com.mongodb.sys.entity.QueryUser;
+import com.mongodb.sys.entity.User;
 import com.mongodb.sys.service.OrgGroupService;
 import com.mongodb.sys.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /*
 * 类描述：
@@ -39,6 +41,30 @@ public class OrgGroupController  extends MongodbBaseController<OrgGroup,QueryOrg
     @Override
     protected MongodbBaseService<OrgGroup, QueryOrgGroup> getService() {
         return orgGroupService;
+    }
+
+
+    /**
+     * 功能描述：跳转到更新用户的页面
+     * @param entity
+     * @param model
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value="/updateUserPage")
+    public String updateUserPage(User entity, Model model) throws Exception {
+        entity = userService.get(entity.getId());
+        model.addAttribute("entity",entity);
+        return getPageBaseRoot()+"/updateUser";
+    }
+
+    /**
+     * 跳转到添加用户的页面
+     * @throws Exception
+     * */
+    @RequestMapping(value="/addUserPage")
+    public String addUserPage() throws Exception{
+        return getPageBaseRoot()+"/addUser";
     }
 
     @RequestMapping(value="/updateGroupPage")

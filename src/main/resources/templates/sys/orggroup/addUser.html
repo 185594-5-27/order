@@ -39,8 +39,8 @@
             <div class="form-inline">
                 <label for="groupName">所属部门:</label>
                 <input type="hidden" name="orgGroup.id" id="groupId" />
-                <input type="text" class="form-control" name="groupName" id="groupName"  readonly="readonly"  placeholder="请选择所属部门" />
-                <div class="col-md-3" style="margin-top: 10px;">
+                <input type="text" class="form-control" name="orgGroup.name" id="groupName"  readonly="readonly"  placeholder="请选择所属部门" />
+                <div class="col-md-12" style="margin-top: 10px;">
                     <ul id="groupZtree" class="ztree" style="width:200px; overflow:auto;"></ul>
                 </div>
             </div>
@@ -264,8 +264,8 @@
             data: {
                 simpleData: {
                     enable:true,
-                    idKey: "node",
-                    pIdKey: "parentNode",
+                    idKey: "id",
+                    pIdKey: "parentId",
                     rootPId: "0"
                 }
             },
@@ -273,7 +273,7 @@
                 beforeClick: function(treeId, treeNode) {
                     var zTree = $.fn.zTree.getZTreeObj('groupZtree');
                     $("#groupName").attr("value",treeNode.name);
-                    $("#groupId").attr("value",treeNode.groupId);
+                    $("#groupId").attr("value",treeNode.id);
                     if (treeNode.isParent) {
                         zTree.expandNode(treeNode);
                         return false;

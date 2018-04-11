@@ -25,7 +25,6 @@ public class UserRoleDao extends MongodbBaseDao<UserRole,QueryUserRole> {
             ids[i] = roles.get(i).getId();
         }
         query.addCriteria(Criteria.where("id").in(ids));
-        printLog(query);
         return mongoTemplate.find(query,UserRole.class);
     }
 

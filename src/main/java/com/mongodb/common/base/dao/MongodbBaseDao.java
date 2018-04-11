@@ -4,9 +4,6 @@ import com.mongodb.common.base.entity.Pagination;
 import com.mongodb.common.base.entity.QueryBase;
 import com.mongodb.common.base.entity.QueryField;
 import com.mongodb.common.util.common.CommonUtil;
-import com.mongodb.util.JSON;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -24,9 +21,6 @@ import java.util.List;
 * @create 2018/3/30 0030 
 */
 public abstract class MongodbBaseDao<T,Q extends QueryBase>{
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(MongodbBaseDao.class);
-
 
     @Autowired
     @Qualifier("mongoTemplate")
@@ -46,13 +40,11 @@ public abstract class MongodbBaseDao<T,Q extends QueryBase>{
     // 根据对象的属性删除
     public void deleteByCondition(T t) {
         Query query = buildBaseQuery(t);
-        printLog(query);
         mongoTemplate.remove(query, getEntityClass());
     }
 
     // 通过条件查询更新数据
     public void update(Query query, Update update) {
-        printLog(query);
         mongoTemplate.updateMulti(query, update, this.getEntityClass());
     }
 
@@ -60,26 +52,22 @@ public abstract class MongodbBaseDao<T,Q extends QueryBase>{
     public void updateById(String id, T t) {
         Query query = new Query();
         query.addCriteria(Criteria.where("id").is(id));
-        printLog(query);
         Update update = buildBaseUpdate(t);
         update(query, update);
     }
 
     // 通过条件查询实体(集合)
     public List<T> find(Query query) {
-        printLog(query);
         return mongoTemplate.find(query, this.getEntityClass());
     }
 
     public List<T> findByCondition(T t) {
         Query query = buildBaseQuery(t);
-        printLog(query);
         return mongoTemplate.find(query, getEntityClass());
     }
 
     // 通过一定的条件查询一个实体
     public T findOne(Query query) {
-        printLog(query);
         return mongoTemplate.findOne(query, this.getEntityClass());
     }
 
@@ -106,7 +94,6 @@ public abstract class MongodbBaseDao<T,Q extends QueryBase>{
         Pagination<T> page = new Pagination(q.getPage(), totalPage, (int)totalCount);
         query.skip(skip);// skip相当于从那条记录开始
         query.limit(q.getLimit());// 从skip开始,取多少条记录
-        printLog(query);
         List<T> data = this.find(query);
         page.build(data);//获取数据
         return page;
@@ -163,10 +150,6 @@ public abstract class MongodbBaseDao<T,Q extends QueryBase>{
     protected  String getCollection(){
         String [] collections = getEntityClass().toString().split("\\.");
         return CommonUtil.toFirstCharLowerCase(collections[collections.length-1]);
-    }
-
-    protected void printLog(Query query){
-        LOGGER.info("findOne using query: {} fields: {} for class: {} in collection: {}", JSON.serialize(query.getQueryObject()),query.getFieldsObject(), getEntityClass(), getCollection());
     }
 
     public MongoTemplate getMongoTemplate() {

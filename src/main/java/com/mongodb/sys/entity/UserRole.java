@@ -1,5 +1,6 @@
 package com.mongodb.sys.entity;
 
+import com.mongodb.common.base.entity.QueryField;
 import net.sf.json.JSONObject;
 import org.bson.types.ObjectId;
 
@@ -94,6 +95,8 @@ public class UserRole {
 
     private ObjectId id;
 
+    // 增加QueryField注解在buildBaseQuery构建Query查询条件的时候会自动将其加入到Query查询条件中
+    @QueryField
     private String name;
 
     private String roleName;

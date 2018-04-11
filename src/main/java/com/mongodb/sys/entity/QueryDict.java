@@ -1,12 +1,18 @@
 package com.mongodb.sys.entity;
 
 import com.mongodb.common.base.entity.QueryBase;
+import com.mongodb.common.base.entity.QueryField;
+import com.mongodb.common.base.entity.QueryType;
 
 public class QueryDict extends QueryBase {
 
+    @QueryField(type = QueryType.LIKE)
     private String code;
+    @QueryField(type = QueryType.LIKE)
     private String text;
+    @QueryField(type = QueryType.LIKE)
     private String type;
+    @QueryField(type = QueryType.LIKE)
     private String value;
 
     public String getCode() {

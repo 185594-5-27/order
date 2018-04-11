@@ -22,26 +22,5 @@ public class DictService extends MongodbBaseService<Dict,QueryDict> {
         return dictDao;
     }
 
-    /**
-     * 功能描述：实现数据字典的分页逻辑
-     * @param entity
-     * @return
-     */
-    public Pagination<Dict> findByPage(QueryDict entity){
-        Query query = new Query();
-        if(entity.getCode()!=null&&!entity.getCode().equals("")){
-            query.addCriteria(Criteria.where("code").regex(".*?"+entity.getCode()+".*"));
-        }
-        if(entity.getText()!=null&&!entity.getText().equals("")){
-            query.addCriteria(Criteria.where("text").regex(".*?"+entity.getText()+".*"));
-        }
-        if(entity.getType()!=null&&!entity.getType().equals("")){
-            query.addCriteria(Criteria.where("type").regex(".*?"+entity.getType()+".*"));
-        }
-        if(entity.getValue()!=null&&!entity.getValue().equals("")){
-            query.addCriteria(Criteria.where("value").regex(".*?"+entity.getValue()+".*"));
-        }
-        return dictDao.findByPage(entity,query);
-    }
 
 }

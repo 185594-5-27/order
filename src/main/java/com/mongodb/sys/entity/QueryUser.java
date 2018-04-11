@@ -1,16 +1,19 @@
 package com.mongodb.sys.entity;
 
 import com.mongodb.common.base.entity.QueryBase;
+import com.mongodb.common.base.entity.QueryField;
+import com.mongodb.common.base.entity.QueryType;
 import org.bson.types.ObjectId;
 
 public class QueryUser extends QueryBase {
 
+    @QueryField(type = QueryType.LIKE)
     private String userName;
-
+    @QueryField(type = QueryType.LIKE)
     private String login;
-
+    @QueryField(type = QueryType.LIKE)
     private String job;
-
+    @QueryField(type = QueryType.LIKE)
     private ObjectId groupId;
 
     public String getGroupId() {

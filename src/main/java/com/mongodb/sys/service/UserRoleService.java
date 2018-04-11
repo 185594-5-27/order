@@ -37,21 +37,6 @@ public class UserRoleService extends MongodbBaseService<UserRole,QueryUserRole> 
         super.updateById(id, entity);
     }
 
-    /**
-     * 功能描述：实现用户角色的分页逻辑
-     * @param entity
-     * @return
-     */
-    public Pagination<UserRole> findByPage(QueryUserRole entity){
-        Query query = new Query();
-        if(entity.getName()!=null&&!entity.getName().equals("")){
-            query.addCriteria(Criteria.where("name").regex(".*?"+entity.getName()+".*"));
-        }
-        if(entity.getRoleName()!=null&&!entity.getRoleName().equals("")){
-            query.addCriteria(Criteria.where("roleName").regex(".*?"+entity.getRoleName()+".*"));
-        }
-        return userRoleDao.findByPage(entity,query);
-    }
 
 
     /**

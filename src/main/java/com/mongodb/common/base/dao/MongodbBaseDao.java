@@ -85,7 +85,8 @@ public abstract class MongodbBaseDao<T,Q extends QueryBase>{
     /**
      * 通过条件查询,查询分页结果
      */
-    public Pagination<T> findByPage(Q q, Query query) {
+    public Pagination<T> findByPage(Q q) {
+        Query query = buildBaseQuery(q);
         //获取总条数
         long totalCount = this.mongoTemplate.count(query, this.getEntityClass());
         //总页数
@@ -97,6 +98,33 @@ public abstract class MongodbBaseDao<T,Q extends QueryBase>{
         List<T> data = this.find(query);
         page.build(data);//获取数据
         return page;
+    }
+
+    private Query buildBaseQuery(Q q){
+        Query query = new Query();
+
+        Field[] fields = q.getClass().getDeclaredFields();
+        for (Field field : fields) {
+            field.setAccessible(true);
+            try {
+                Object value = field.get(q);
+                if (value != null&&!value.equals("")) {
+                    QueryField queryField = field.getAnnotation(QueryField.class);
+                    if (queryField != null) {
+                        if(value instanceof String){
+                            query.addCriteria(queryField.type().buildCriteria(queryField, field, value));
+                        }else{
+                            query.addCriteria(queryField.type().buildCriteria(queryField, field, value));
+                        }
+                    }
+                }
+            } catch (IllegalArgumentException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
+        return query;
     }
 
     // 根据vo构建查询条件Query

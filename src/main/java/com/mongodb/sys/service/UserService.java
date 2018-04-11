@@ -59,28 +59,6 @@ public class UserService extends MongodbBaseService<User,QueryUser> {
     }
 
     /**
-     * 功能描述：实现用户的分页逻辑
-     * @param entity
-     * @return
-     */
-    public Pagination<User> findByPage(QueryUser entity){
-        Query query = new Query();
-        if(entity.getUserName()!=null&&!entity.getUserName().equals("")){
-            query.addCriteria(Criteria.where("userName").regex(".*?"+entity.getUserName()+".*"));
-        }
-        if(entity.getLogin()!=null&&!entity.getLogin().equals("")){
-            query.addCriteria(Criteria.where("login").regex(".*?"+entity.getLogin()+".*"));
-        }
-        if(entity.getJob()!=null&&!entity.getJob().equals("")){
-            query.addCriteria(Criteria.where("job").regex(".*?"+entity.getJob()+".*"));
-        }
-        if(entity.getGroupId()!=null&&!entity.getGroupId().equals("")){
-            query.addCriteria(Criteria.where("orgGroup.id").is(new ObjectId(entity.getGroupId())));
-        }
-        return userDao.findByPage(entity,query);
-    }
-
-    /**
      * 功能描述：根据账号来获取用户信息
      * @param login
      * @return

@@ -146,6 +146,23 @@ public abstract class MongodbBaseController<T,Q extends QueryBase> {
         return result;
     }
 
+    /**
+     * 功能描述：判断当前的字典元素是否已经存在
+     * @param entity
+     * @return
+     */
+    @RequestMapping(value = "/isExist",method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public Map<String,Object> isExist(T entity){
+        Map<String,Object> result = new HashMap<String, Object>();
+        if(getService().findByCondition(entity).size()>0){
+            result.put("valid",false);
+        }else{
+            result.put("valid",true);
+        }
+        return result;
+    }
+
 
 
 }

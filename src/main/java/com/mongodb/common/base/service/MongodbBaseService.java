@@ -77,8 +77,8 @@ public abstract class MongodbBaseService<T,Q extends QueryBase> {
     /**
      * 通过条件查询,查询分页结果
      */
-    public Pagination<T> findByPage(Q q, Query query){
-        return getDao().findByPage(q,query);
+    public Pagination<T> findByPage(Q q){
+        return getDao().findByPage(q);
     }
 
 }

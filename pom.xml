@@ -42,6 +42,13 @@
 			<artifactId>spring-boot-starter-data-mongodb</artifactId>
 		</dependency>
 
+		<!-- https://mvnrepository.com/artifact/org.springframework.data/spring-data-mongodb-log4j -->
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-mongodb-log4j</artifactId>
+		</dependency>
+
+
 		<dependency>
 			<groupId>io.springfox</groupId>
 			<artifactId>springfox-swagger2</artifactId>
@@ -92,6 +99,11 @@
 			<classifier>jdk15</classifier>
 		</dependency>
 
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-aop</artifactId>
+		</dependency>
 
 	</dependencies>
 

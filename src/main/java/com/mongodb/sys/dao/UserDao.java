@@ -27,6 +27,7 @@ public class UserDao extends MongodbBaseDao<User,QueryUser> {
      */
     public User findByLogin(String login){
         Query query=new Query(Criteria.where("login").is(login));
+        printLog(query);
         User user =  mongoTemplate.findOne(query , User.class);
         return user;
     }
@@ -38,6 +39,7 @@ public class UserDao extends MongodbBaseDao<User,QueryUser> {
      */
     public void userControl(User user){
         Query query=new Query(Criteria.where("id").is(user.getId()));
+        printLog(query);
         Update update= new Update().set("state", user.getState());
         mongoTemplate.updateFirst(query,update,User.class);
     }

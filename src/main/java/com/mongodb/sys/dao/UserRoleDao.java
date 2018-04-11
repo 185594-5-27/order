@@ -3,6 +3,7 @@ package com.mongodb.sys.dao;
 import com.mongodb.common.base.dao.MongodbBaseDao;
 import com.mongodb.sys.entity.QueryUserRole;
 import com.mongodb.sys.entity.UserRole;
+import net.sf.json.JSONObject;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Component;
@@ -23,7 +24,8 @@ public class UserRoleDao extends MongodbBaseDao<UserRole,QueryUserRole> {
         for(int i=0;i<roles.size();i++){
             ids[i] = roles.get(i).getId();
         }
-        query.addCriteria(Criteria.where("id").is(roles.get(0).getId()));
+        query.addCriteria(Criteria.where("id").in(ids));
+        printLog(query);
         return mongoTemplate.find(query,UserRole.class);
     }
 

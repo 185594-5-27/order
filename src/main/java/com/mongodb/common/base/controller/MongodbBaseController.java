@@ -3,6 +3,7 @@ package com.mongodb.common.base.controller;
 import com.mongodb.common.base.constant.SystemStaticConst;
 import com.mongodb.common.base.entity.QueryBase;
 import com.mongodb.common.base.service.MongodbBaseService;
+import com.mongodb.common.util.common.CommonUtil;
 import com.mongodb.common.util.json.JsonHelper;
 import org.springframework.http.MediaType;
 import org.springframework.ui.Model;
@@ -43,8 +44,8 @@ public abstract class MongodbBaseController<T,Q extends QueryBase> {
                 basePath = basePath.substring(1, basePath.length()-10);
                 basePath = basePath.replace(".", "/");
                 basePath = basePath.replace("/controller/", "/");
-                basePath = toFirstCharLowerCase(basePath);
-                basePath = basePath.substring(0,basePath.lastIndexOf("/")+1)+toFirstCharLowerCase(basePath.substring(basePath.lastIndexOf("/")+1));
+                basePath = CommonUtil.toFirstCharLowerCase(basePath);
+                basePath = basePath.substring(0,basePath.lastIndexOf("/")+1)+CommonUtil.toFirstCharLowerCase(basePath.substring(basePath.lastIndexOf("/")+1));
             }
             else{
                 throw new Exception("获取页面基路径失败");
@@ -145,23 +146,6 @@ public abstract class MongodbBaseController<T,Q extends QueryBase> {
         return result;
     }
 
-    /**
-     * 将首字母变小写
-     * @param str
-     * @return
-     */
-    private String toFirstCharLowerCase(String str){
-        char[]  columnCharArr = str.toCharArray();
-        StringBuffer sb = new StringBuffer();
-        for (int i = 0; i < columnCharArr.length; i++) {
-            char cur = columnCharArr[i];
-            if(i==0){
-                sb.append(Character.toLowerCase(cur));
-            }else{
-                sb.append(cur);
-            }
-        }
-        return sb.toString();
-    }
+
 
 }

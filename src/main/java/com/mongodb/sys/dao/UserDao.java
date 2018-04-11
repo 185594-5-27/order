@@ -1,14 +1,18 @@
 package com.mongodb.sys.dao;
 
 import com.mongodb.common.base.dao.MongodbBaseDao;
+import com.mongodb.common.base.entity.Pagination;
 import com.mongodb.sys.entity.QueryUser;
 import com.mongodb.sys.entity.User;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 /*
 * 类描述：实现用户管理的dao
@@ -42,4 +46,22 @@ public class UserDao extends MongodbBaseDao<User,QueryUser> {
         mongoTemplate.updateFirst(query,update,User.class);
     }
 
+    @Override
+    public Pagination<User> findByPage(QueryUser queryUser) {
+        Query query = buildBaseQuery(queryUser);
+        if(queryUser.getGroupId()!=null&&!queryUser.getGroupId().equals("")){
+            query.addCriteria(Criteria.where("orgGroup.id").is(new ObjectId(queryUser.getGroupId())));
+        }
+        //获取总条数
+        long totalCount = this.mongoTemplate.count(query, this.getEntityClass());
+        //总页数
+        int totalPage = (int) (totalCount/queryUser.getLimit());
+        int skip = (queryUser.getPage()-1)*queryUser.getLimit();
+        Pagination<User> page = new Pagination(queryUser.getPage(), totalPage, (int)totalCount);
+        query.skip(skip);// skip相当于从那条记录开始
+        query.limit(queryUser.getLimit());// 从skip开始,取多少条记录
+        List<User> data = this.find(query);
+        page.build(data);//获取数据
+        return page;
+    }
 }

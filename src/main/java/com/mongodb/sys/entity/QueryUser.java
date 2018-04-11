@@ -13,7 +13,7 @@ public class QueryUser extends QueryBase {
     private String login;
     @QueryField(type = QueryType.LIKE)
     private String job;
-    @QueryField(type = QueryType.LIKE)
+
     private ObjectId groupId;
 
     public String getGroupId() {

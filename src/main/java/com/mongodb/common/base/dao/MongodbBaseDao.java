@@ -100,7 +100,7 @@ public abstract class MongodbBaseDao<T,Q extends QueryBase>{
         return page;
     }
 
-    private Query buildBaseQuery(Q q){
+    public Query buildBaseQuery(Q q){
         Query query = new Query();
 
         Field[] fields = q.getClass().getDeclaredFields();
